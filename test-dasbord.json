@@ -811,7 +811,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "FastAPI DevOps Monitoring",
-  "uid": "devops-fastapi-dashboard",
+  "title": "FastAPI-Monitoring",
+  "uid": "fastapi-dashboard",
   "version": 6
 }

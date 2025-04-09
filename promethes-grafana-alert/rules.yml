@@ -1,0 +1,38 @@
+groups:
+  - name: example_alerts
+    rules:
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{http_status=~"5.."}[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          description: "High error rate (5xx) detected."
+          summary: "More than 5% of requests are returning 5xx errors."
+
+      - alert: HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, endpoint)) > 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          description: "High latency detected for endpoint {{ $labels.endpoint }}."
+          summary: "95th percentile response time exceeds 1s."
+
+      - alert: LowAvailability
+        expr: (rate(http_requests_total{http_status=~"2.."}[5m]) / rate(http_requests_total[5m])) < 0.95
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          description: "Availability below 95%."
+          summary: "The system's availability is below 95%."
+
+      - alert: LowThroughput
+        expr: rate(http_requests_total[5m]) < 1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          description: "Low throughput detected."
+          summary: "The system is receiving less than 1 request per second."
